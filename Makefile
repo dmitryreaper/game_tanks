@@ -1,31 +1,29 @@
-# Compiler settings
-CXX = g++
-CXXFLAGS = -Wall -std=c++17
-LDFLAGS = -lSDL2 -Iinclude -lSDL2main -lSDL2 -lSDL2_image
+# Компилятор и флаги
+CXX = c++
+CXXFLAGS = -std=c++17 -Iinclude `sdl2-config --cflags`
 
-# File paths
-SRC_DIR = .
-OBJ_DIR = obj
+# Линкинг
+LDFLAGS = `sdl2-config --libs` -lSDL2_image
+
+# Исходные файлы
+SRC = main.cpp game.cpp
+OBJ = main.o game.o
+
+# Директория для исполняемого файла
 BIN_DIR = bin
+BIN = $(BIN_DIR)/game
 
-# Source files
-SRCS = $(SRC_DIR)/game.cpp $(SRC_DIR)/main.cpp
-OBJS = $(SRCS:.cpp=.o)
-EXEC = $(BIN_DIR)/game
+# Цели
+all: $(BIN)
 
-# Targets
-all: $(EXEC)
+$(BIN): $(OBJ)
+	mkdir -p $(BIN_DIR)
+	$(CXX) $(OBJ) -o $(BIN) $(LDFLAGS)
 
-# Linking
-$(EXEC): $(OBJS)
-	$(CXX) $(OBJS) -o $@ $(LDFLAGS)
-
-# Compilation
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-# Clean up
 clean:
-	rm -f $(OBJ_DIR)/*.o $(BIN_DIR)/game
+	rm -rf $(OBJ) $(BIN_DIR)
 
 .PHONY: all clean
