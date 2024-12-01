@@ -1,33 +1,36 @@
-#pragma once
+#ifndef GAME_H
+#define GAME_H
 
-#include <SDL2/SDL_render.h>
-#include <SDL2/SDL_stdinc.h>
-#include <SDL2/SDL_video.h>
-#include <iostream>
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
 
-enum class GameState {PLAY, EXIT};
+enum class GameState {
+    PLAY,
+    EXIT
+};
 
 class Game {
-	
- public:
-	Game();
-	~Game();
-	
-	void run();
-	
- private:
+public:
+    Game();
+    ~Game();
 
-	void init(const char* title, int x, int y, int w, int h, Uint32 flags);
-	void gameLoop();
-	void handleEvents();
+    void run();
 
-	SDL_Window* _window;
-	SDL_Renderer* _renderer;
+private:
+    void init(const char* title, int x, int y, int w, int h, Uint32 flags);
+    void gameLoop();
+    void handleEvents();
+    void update();
+    void draw();
 
-	int ScreenWidth;
-	int ScreenHeight;
+    SDL_Window* _window;
+    SDL_Renderer* _renderer;
 
-	GameState _gamestate;
+    int ScreenWidth;
+    int ScreenHeight;
+    GameState _gamestate;
+
+    SDL_Rect _player; // Прямоугольник для игрока
+    int _playerSpeed; // Скорость игрока
 };
+
+#endif // GAME_H
